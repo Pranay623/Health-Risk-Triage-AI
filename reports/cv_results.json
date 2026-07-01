@@ -1,0 +1,68 @@
+{
+  "logistic_regression": {
+    "model": "logistic_regression",
+    "best_params": {
+      "solver": "saga",
+      "penalty": "l1",
+      "C": 10.0
+    },
+    "cv_f1_macro_mean": 0.5578,
+    "cv_f1_macro_std": 0.0273,
+    "train_time_sec": 87.1,
+    "model_path": "models\\logistic_regression_best.joblib"
+  },
+  "decision_tree": {
+    "model": "decision_tree",
+    "best_params": {
+      "min_samples_leaf": 20,
+      "max_depth": null,
+      "criterion": "entropy"
+    },
+    "cv_f1_macro_mean": 0.8061,
+    "cv_f1_macro_std": 0.0158,
+    "train_time_sec": 0.8,
+    "model_path": "models\\decision_tree_best.joblib"
+  },
+  "random_forest": {
+    "model": "random_forest",
+    "best_params": {
+      "n_estimators": 200,
+      "min_samples_leaf": 1,
+      "max_features": "log2",
+      "max_depth": 10
+    },
+    "cv_f1_macro_mean": 0.8655,
+    "cv_f1_macro_std": 0.016,
+    "train_time_sec": 19.7,
+    "model_path": "models\\random_forest_best.joblib"
+  },
+  "mlp": {
+    "model": "mlp",
+    "best_params": {
+      "learning_rate_init": 0.01,
+      "hidden_layer_sizes": [
+        64,
+        32
+      ],
+      "alpha": 0.0001
+    },
+    "cv_f1_macro_mean": 0.7807,
+    "cv_f1_macro_std": 0.0218,
+    "train_time_sec": 57.9,
+    "model_path": "models\\mlp_best.joblib"
+  },
+  "xgboost": {
+    "model": "xgboost",
+    "best_params": {
+      "subsample": 1.0,
+      "n_estimators": 200,
+      "max_depth": 6,
+      "learning_rate": 0.2,
+      "colsample_bytree": 0.8
+    },
+    "cv_f1_macro_mean": 0.9413,
+    "cv_f1_macro_std": 0.0101,
+    "train_time_sec": 15.9,
+    "model_path": "models\\xgboost_best.joblib"
+  }
+}

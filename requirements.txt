@@ -26,5 +26,8 @@ shap>=0.40.0             # SHAP values (TreeExplainer, LinearExplainer)
 jupyter>=1.0.0
 ipykernel>=6.0.0
 
+# --- Frontend ---------------------------------------------------------
+streamlit>=1.30.0
+
 # --- Optional: progress bars (used in data_loading for large runs) ----
 tqdm>=4.65.0

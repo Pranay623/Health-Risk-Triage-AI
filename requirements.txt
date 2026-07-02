@@ -1,0 +1,30 @@
+# ======================================================================
+# Health Risk Triage — Phase 1 Dependencies
+# ======================================================================
+# Install with: pip install -r requirements.txt
+#
+# Python >= 3.9 required (uses __future__ annotations, match syntax)
+# Tested on Python 3.10 / 3.11
+# ======================================================================
+
+# --- Core data stack --------------------------------------------------
+numpy>=1.26.3
+pandas>=2.0.0
+pyarrow>=16.1.0          # required for .parquet read/write
+
+# --- Machine learning -------------------------------------------------
+scikit-learn>=1.5.1      # LogisticRegression, RF, DT, MLP, SVC, metrics
+xgboost>=2.0.0           # XGBClassifier (gradient boosting)
+
+# --- Model persistence ------------------------------------------------
+joblib>=1.4.2            # model save/load (.joblib files)
+
+# --- Explainability ---------------------------------------------------
+shap>=0.40.0             # SHAP values (TreeExplainer, LinearExplainer)
+
+# --- Notebooks --------------------------------------------------------
+jupyter>=1.0.0
+ipykernel>=6.0.0
+
+# --- Optional: progress bars (used in data_loading for large runs) ----
+tqdm>=4.65.0

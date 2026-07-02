@@ -1,0 +1,292 @@
+{
+  "decision_tree": {
+    "model": "decision_tree",
+    "f1_macro": 0.803,
+    "f1_weighted": 0.9511,
+    "auroc_macro": 0.962,
+    "per_class": {
+      "Low": {
+        "precision": 0.9959,
+        "recall": 0.9434,
+        "f1": 0.969,
+        "support": 3376
+      },
+      "Medium": {
+        "precision": 0.9808,
+        "recall": 0.9217,
+        "f1": 0.9503,
+        "support": 332
+      },
+      "High": {
+        "precision": 0.8764,
+        "recall": 1.0,
+        "f1": 0.9341,
+        "support": 78
+      },
+      "Critical": {
+        "precision": 0.2413,
+        "recall": 0.697,
+        "f1": 0.3584,
+        "support": 99
+      }
+    },
+    "confusion_matrix": [
+      [
+        3185,
+        0,
+        0,
+        191
+      ],
+      [
+        0,
+        306,
+        0,
+        26
+      ],
+      [
+        0,
+        0,
+        78,
+        0
+      ],
+      [
+        13,
+        6,
+        11,
+        69
+      ]
+    ]
+  },
+  "logistic_regression": {
+    "model": "logistic_regression",
+    "f1_macro": 0.5596,
+    "f1_weighted": 0.7443,
+    "auroc_macro": 0.7979,
+    "per_class": {
+      "Low": {
+        "precision": 0.9802,
+        "recall": 0.6448,
+        "f1": 0.7779,
+        "support": 3376
+      },
+      "Medium": {
+        "precision": 0.4538,
+        "recall": 0.8584,
+        "f1": 0.5938,
+        "support": 332
+      },
+      "High": {
+        "precision": 0.7333,
+        "recall": 0.9872,
+        "f1": 0.8415,
+        "support": 78
+      },
+      "Critical": {
+        "precision": 0.014,
+        "recall": 0.1313,
+        "f1": 0.0252,
+        "support": 99
+      }
+    },
+    "confusion_matrix": [
+      [
+        2177,
+        322,
+        0,
+        877
+      ],
+      [
+        0,
+        285,
+        6,
+        41
+      ],
+      [
+        0,
+        1,
+        77,
+        0
+      ],
+      [
+        44,
+        20,
+        22,
+        13
+      ]
+    ]
+  },
+  "mlp": {
+    "model": "mlp",
+    "f1_macro": 0.7711,
+    "f1_weighted": 0.9675,
+    "auroc_macro": 0.9675,
+    "per_class": {
+      "Low": {
+        "precision": 0.982,
+        "recall": 0.9994,
+        "f1": 0.9906,
+        "support": 3376
+      },
+      "Medium": {
+        "precision": 0.9698,
+        "recall": 0.9669,
+        "f1": 0.9683,
+        "support": 332
+      },
+      "High": {
+        "precision": 0.8242,
+        "recall": 0.9615,
+        "f1": 0.8876,
+        "support": 78
+      },
+      "Critical": {
+        "precision": 0.5556,
+        "recall": 0.1515,
+        "f1": 0.2381,
+        "support": 99
+      }
+    },
+    "confusion_matrix": [
+      [
+        3374,
+        0,
+        0,
+        2
+      ],
+      [
+        0,
+        321,
+        4,
+        7
+      ],
+      [
+        0,
+        0,
+        75,
+        3
+      ],
+      [
+        62,
+        10,
+        12,
+        15
+      ]
+    ]
+  },
+  "random_forest": {
+    "model": "random_forest",
+    "f1_macro": 0.851,
+    "f1_weighted": 0.9749,
+    "auroc_macro": 0.9807,
+    "per_class": {
+      "Low": {
+        "precision": 0.9899,
+        "recall": 0.9876,
+        "f1": 0.9887,
+        "support": 3376
+      },
+      "Medium": {
+        "precision": 0.9792,
+        "recall": 0.994,
+        "f1": 0.9865,
+        "support": 332
+      },
+      "High": {
+        "precision": 0.8764,
+        "recall": 1.0,
+        "f1": 0.9341,
+        "support": 78
+      },
+      "Critical": {
+        "precision": 0.5165,
+        "recall": 0.4747,
+        "f1": 0.4947,
+        "support": 99
+      }
+    },
+    "confusion_matrix": [
+      [
+        3334,
+        0,
+        0,
+        42
+      ],
+      [
+        0,
+        330,
+        0,
+        2
+      ],
+      [
+        0,
+        0,
+        78,
+        0
+      ],
+      [
+        34,
+        7,
+        11,
+        47
+      ]
+    ]
+  },
+  "xgboost": {
+    "model": "xgboost",
+    "f1_macro": 0.9423,
+    "f1_weighted": 0.9914,
+    "auroc_macro": 0.9983,
+    "per_class": {
+      "Low": {
+        "precision": 0.9973,
+        "recall": 0.9973,
+        "f1": 0.9973,
+        "support": 3376
+      },
+      "Medium": {
+        "precision": 0.985,
+        "recall": 0.991,
+        "f1": 0.988,
+        "support": 332
+      },
+      "High": {
+        "precision": 0.9277,
+        "recall": 0.9872,
+        "f1": 0.9565,
+        "support": 78
+      },
+      "Critical": {
+        "precision": 0.8587,
+        "recall": 0.798,
+        "f1": 0.8272,
+        "support": 99
+      }
+    },
+    "confusion_matrix": [
+      [
+        3367,
+        0,
+        0,
+        9
+      ],
+      [
+        0,
+        329,
+        0,
+        3
+      ],
+      [
+        0,
+        0,
+        77,
+        1
+      ],
+      [
+        9,
+        5,
+        6,
+        79
+      ]
+    ]
+  }
+}

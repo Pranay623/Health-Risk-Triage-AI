@@ -1,0 +1,18 @@
+SHAP Feature Importance — xgboost
+=============================================
+Rank   Feature               Mean |SHAP|
+---------------------------------------------
+1      NEWS2Score                 3.5634  ####################
+2      Age                        0.7152  ####
+3      ICULOS                     0.6442  ###
+4      Resp                       0.3146  #
+5      Temp                       0.3099  #
+6      ShockIndex                 0.2808  #
+7      HR                         0.2673  #
+8      DBP                        0.1857  #
+9      SBP                        0.1794  #
+10     O2Sat                      0.1708  
+11     PulsePressure              0.1489  
+12     MAP                        0.1353  
+13     Gender                     0.1090  
+14     AgeGroup                   0.0247  

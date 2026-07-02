@@ -1,0 +1,268 @@
+# ======================================================================
+# config.yaml
+# Health Risk Triage — Phase 1 Central Configuration
+# ======================================================================
+# Single source of truth for all project-wide settings.
+# Referenced by src/ modules and notebooks.
+# Change values here rather than hunting through source files.
+#
+# Load in Python with:
+#   import yaml
+#   with open("config.yaml") as f:
+#       config = yaml.safe_load(f)
+# ======================================================================
+
+
+# ----------------------------------------------------------------------
+# Paths
+# ----------------------------------------------------------------------
+paths:
+  raw_data      : "data/raw/physionet2019"
+  interim       : "data/interim"
+  processed     : "data/processed/phase1"
+
+  # Processed file names (inside paths.processed)
+  phase1_raw      : "phase1_raw.parquet"
+  phase1_labeled  : "phase1_labeled.parquet"
+  phase1_features : "phase1_features.parquet"
+  phase1_train    : "phase1_train.parquet"
+  phase1_test     : "phase1_test.parquet"
+  preprocessor    : "preprocessor.joblib"
+
+  models          : "models"
+  reports         : "reports"
+  figures         : "reports/figures"
+
+
+# ----------------------------------------------------------------------
+# Reproducibility
+# ----------------------------------------------------------------------
+random_state : 42       # Fixed seed used across all train/test splits,
+                        # model initialisations, and CV folds.
+                        # TRIPOD Item 10b: document and fix random seed.
+
+
+# ----------------------------------------------------------------------
+# Phase 1 feature scope
+# ----------------------------------------------------------------------
+features:
+  # Vitals available in PhysioNet 2019 (raw columns kept from PSV files)
+  vitals:
+    - HR
+    - O2Sat
+    - Temp
+    - SBP
+    - MAP
+    - DBP
+    - Resp
+
+  # Demographics (always complete — 0% missing)
+  demographics:
+    - Age
+    - Gender
+
+  # Time index (used for within-patient imputation ordering, not a model feature)
+  time_index: ICULOS
+
+  # Engineered features added by features.py
+  engineered:
+    - ShockIndex        # HR / SBP  (haemodynamic instability proxy)
+    - PulsePressure     # SBP - DBP (stroke volume proxy)
+    - AgeGroup          # Ordinal age band (0=18-40, 1=41-60, 2=61-75, 3=76+)
+    - NEWS2Score        # Aggregate vital severity score (labeling.py)
+
+  # Final model input feature list (14 total)
+  model_features:
+    - HR
+    - O2Sat
+    - Temp
+    - SBP
+    - MAP
+    - DBP
+    - Resp
+    - ShockIndex
+    - PulsePressure
+    - NEWS2Score
+    - Age
+    - AgeGroup
+    - Gender
+    - ICULOS
+
+  # Columns scaled with StandardScaler (continuous)
+  continuous:
+    - HR
+    - O2Sat
+    - Temp
+    - SBP
+    - MAP
+    - DBP
+    - Resp
+    - ShockIndex
+    - PulsePressure
+    - NEWS2Score
+
+  # Columns NOT scaled (ordinal/integer — already on meaningful scales)
+  ordinal:
+    - Age
+    - AgeGroup
+    - Gender
+    - ICULOS
+
+  # Target column
+  target: UrgencyLevel
+
+  # Columns dropped before model training
+  drop:
+    - PatientID
+    - SepsisLabel
+    - UrgencyLabel
+
+
+# ----------------------------------------------------------------------
+# Labeling — NEWS2-style urgency thresholds
+# Source: Royal College of Physicians, NEWS2, 2017
+# ----------------------------------------------------------------------
+labeling:
+  # NEWS2 score band → urgency level mapping
+  urgency_bands:
+    Low      : [0, 4]     # score 0-4
+    Medium   : [5, 6]     # score 5-6
+    High     : [7, 8]     # score 7-8
+    Critical : [9, 15]    # score 9+ (max possible: 15)
+
+  # Integer encoding for ML models
+  urgency_encoding:
+    Low      : 0
+    Medium   : 1
+    High     : 2
+    Critical : 3
+
+  # SepsisLabel=1 always overrides to Critical, regardless of NEWS2 score
+  sepsis_override: true
+
+  # NEWS2 vital scoring thresholds (per RCP 2017)
+  # Format: [<=threshold: score, ...] — see labeling.py for full logic
+  news2_thresholds:
+    HR:
+      "<=40"       : 3
+      "41-50"      : 1
+      "51-90"      : 0    # normal
+      "91-110"     : 1
+      "111-130"    : 2
+      ">=131"      : 3
+    Resp:
+      "<=8"        : 3
+      "9-11"       : 1
+      "12-20"      : 0    # normal
+      "21-24"      : 2
+      ">=25"       : 3
+    O2Sat:
+      "<=91"       : 3
+      "92-93"      : 2
+      "94-95"      : 1
+      ">=96"       : 0    # normal
+    SBP:
+      "<=90"       : 3
+      "91-100"     : 2
+      "101-110"    : 1
+      "111-219"    : 0    # normal
+      ">=220"      : 3
+    Temp:
+      "<=35.0"     : 3
+      "35.1-36.0"  : 1
+      "36.1-38.0"  : 0    # normal
+      "38.1-39.0"  : 1
+      ">=39.1"     : 2
+
+  # Age group bins (AgeGroup feature)
+  age_bins    : [0, 40, 60, 75, 200]
+  age_labels  : [0, 1, 2, 3]          # 0=Young, 1=Middle, 2=Older, 3=Elderly
+
+
+# ----------------------------------------------------------------------
+# Preprocessing
+# ----------------------------------------------------------------------
+preprocessing:
+  test_size    : 0.20     # 80/20 train/test split
+  cv_folds     : 5        # StratifiedKFold folds
+
+  # Three-tier imputation order (see preprocessing.py)
+  imputation_strategy:
+    tier1: "forward_fill_within_patient"
+    tier2: "backward_fill_within_patient"
+    tier3: "global_median_from_train"
+
+  # Class imbalance handling
+  class_weight : "balanced"    # sklearn standard; XGBoost uses sample_weight
+
+
+# ----------------------------------------------------------------------
+# Training
+# ----------------------------------------------------------------------
+training:
+  cv_scoring   : "f1_macro"   # Primary CV selection metric
+                              # NOT accuracy (dominated by Low class)
+                              # NOT AUROC (AUROC illusion — see literature)
+  n_iter       : 20           # RandomizedSearchCV iterations per model
+  n_jobs       : -1           # Use all available CPU cores
+
+  # Models included in Phase 1 comparison
+  models:
+    - logistic_regression
+    - decision_tree
+    - random_forest
+    - xgboost
+    - mlp
+
+  # SVM excluded — documented reason:
+  # RBF kernel + Platt scaling ran >2.5h on 15k rows (O(n^2) complexity)
+  # Not viable for dataset of this scale or for real-time deployment.
+  excluded_models:
+    - svm
+
+
+# ----------------------------------------------------------------------
+# Evaluation
+# ----------------------------------------------------------------------
+evaluation:
+  # Primary metric for final model ranking
+  primary_metric : "f1_macro"
+
+  # Most important clinical metric (see evaluate.py docstring)
+  clinical_priority_metric : "critical_recall"
+
+  # SHAP — which model to run explainability on by default
+  shap_model     : "xgboost"
+  shap_top_n     : 7          # top N features to display in console output
+
+
+# ----------------------------------------------------------------------
+# Dataset metadata (for documentation / reporting)
+# ----------------------------------------------------------------------
+dataset:
+  name        : "PhysioNet Computing in Cardiology Challenge 2019"
+  task        : "Early prediction of sepsis from clinical data"
+  source      : "https://physionet.org/content/challenge-2019/1.0.0/"
+  reference   : "Reyna et al., Critical Care Medicine, 2020"
+  n_patients  : 40336
+  n_sets      : 2             # training_setA and training_setB
+  file_format : "PSV"         # pipe-separated values, one file per patient
+  label_col   : "SepsisLabel" # binary (0/1), set 6h before sepsis onset
+
+  # Phase 1 scope note
+  phase1_note : >
+    Phase 1 uses only vitals + demographics from the raw PSV files.
+    The 26 lab-value columns are intentionally excluded as they are
+    unavailable in low-resource first-contact settings (project scope).
+
+
+# ----------------------------------------------------------------------
+# Clinical framework references
+# ----------------------------------------------------------------------
+references:
+  NEWS2 : "Royal College of Physicians. National Early Warning Score (NEWS) 2. London: RCP, 2017."
+  ETAT  : "WHO. Emergency Triage Assessment and Treatment (ETAT). Geneva: WHO, 2005."
+  IMCI  : "WHO. Integrated Management of Childhood Illness (IMCI). Geneva: WHO, 2019."
+  TRIPOD: "Collins et al. Transparent Reporting of a Multivariable Prediction Model. Ann Intern Med, 2015."
+  EWS_ML: "Mao et al. Multicentre validation of a sepsis prediction algorithm using only vital sign data. BMJ Open, 2018."
+  JMIR  : "Gerry et al. Early Warning Scores for Detecting Deterioration in Adult Hospital Patients. JMIR, 2021."

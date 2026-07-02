@@ -107,8 +107,8 @@ def _load_single_patient(filepath: Path) -> pd.DataFrame:
 
 def load_physionet_phase1(
     raw_dir: str | Path,
-    limit: int | None = None,
-    verbose_every: int = 5000,
+    limit: int | None = 500,
+    verbose_every: int = None,
 ) -> pd.DataFrame:
     """
     Load and concatenate all PhysioNet 2019 patient files into one
@@ -149,7 +149,7 @@ def load_physionet_phase1(
         except Exception as e:
             failed.append((filepath.name, str(e)))
 
-        if i % verbose_every == 0:
+        if verbose_every and i % verbose_every == 0:
             logger.info(f"  processed {i}/{len(files)} files...")
 
     if failed:

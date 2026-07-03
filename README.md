@@ -57,6 +57,10 @@ data/raw/physionet2019/
     └── ...  (~20,000 files)
 ```
 
+### 4. Troubleshooting SHAP and XGBoost
+If you encounter a `ValueError` related to `base_score` when running `shap.TreeExplainer` on an XGBoost model, it is due to a known bug in SHAP when parsing multi-class model parameters from XGBoost 2.x.
+To resolve this, ensure you are using `shap==0.46.0` (with `numpy<2`). In some cases, a manual source code patch to `shap/explainers/_tree.py` is required to parse `base_score` as a string-list correctly.
+
 ---
 
 ## 🧠 Running the Project

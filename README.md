@@ -39,12 +39,11 @@ The raw PhysioNet 2019 data is not committed to this repo (40,336 PSV files, ~1G
 
 **How to download:**
 1. Register at [physionet.org](https://physionet.org/content/challenge-2019/1.0.0/) and accept the data use agreement.
-2. Download `training_setA.zip` and `training_setB.zip` using `wget` (with retry logic in case of network drops):
+2. Run the download script to fetch and extract the data automatically:
    ```bash
-   wget -c --retry-connrefused --tries=5 https://physionet.org/files/challenge-2019/1.0.0/training/training_setA.zip
-   wget -c --retry-connrefused --tries=5 https://physionet.org/files/challenge-2019/1.0.0/training/training_setB.zip
+   python download_physionet.py
    ```
-3. Extract both archives into `data/raw/physionet2019/`.
+   *(Note: If the download is paused or interrupted, you can resume it by running `python retry_download.py`)*
 
 Expected structure after extraction:
 ```text

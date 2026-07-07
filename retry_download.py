@@ -11,7 +11,7 @@ import urllib.request
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-RAW_DIR = Path("e:/DMSRDE INTERNSHIP PROJECT/health-risk-triage/data/raw/physionet2019")
+RAW_DIR = Path("data/raw/physionet2019")
 BASE = "https://physionet.org/files/challenge-2019/1.0.0/training"
 MAX_WORKERS = 8  # reduced concurrency to avoid throttling
 MAX_RETRIES = 3

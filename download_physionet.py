@@ -16,7 +16,7 @@ from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # ── Paths ────────────────────────────────────────────────────────────────────
-RAW_DIR = Path("e:/DMSRDE INTERNSHIP PROJECT/health-risk-triage/data/raw/physionet2019")
+RAW_DIR = Path("data/raw/physionet2019")
 
 # ── PhysioNet directory URLs ─────────────────────────────────────────────────
 BASE = "https://physionet.org/files/challenge-2019/1.0.0/training"
